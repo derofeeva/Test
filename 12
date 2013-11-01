@@ -1,0 +1,64 @@
+import org.junit.After;
+import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.net.URL;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import com.saucelabs.common.SauceOnDemandAuthentication;
+import com.saucelabs.common.SauceOnDemandSessionIdProvider;
+import com.saucelabs.junit.SauceOnDemandTestWatcher;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+import java.util.concurrent.TimeUnit;
+import java.util.Date;
+import java.io.File;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.*;
+import static org.openqa.selenium.OutputType.*;
+
+public class  implements SauceOnDemandSessionIdProvider {
+    private String sessionId;
+    public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication("derofeeva", "51041a50-e6a0-4256-93a0-d5c55520e412");
+    public @Rule SauceOnDemandTestWatcher resultReportingTestWatcher = new SauceOnDemandTestWatcher(this, authentication);
+    public @Rule TestName testName = new TestName();
+    @Override public String getSessionId() { return sessionId; }
+    RemoteWebDriver wd;
+    
+    @Before
+    public void setUp() throws Exception {
+        DesiredCapabilities caps = DesiredCapabilities.{browserstring2}();
+            caps.setCapability("name", "");
+        wd = new RemoteWebDriver(
+            new URL("http://derofeeva:51041a50-e6a0-4256-93a0-d5c55520e412@ondemand.saucelabs.com:80/wd/hub"),
+            caps);
+        wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        sessionId = wd.getSessionId().toString();
+    }
+    
+    @Test
+    public void () {
+        wd.get("https://saucelabs.com/docs/javascript-unit-testing-tutorial");
+        wd.findElement(By.linkText("Home")).click();
+        wd.findElement(By.xpath("//ul[@class='customers-list']//li[.='Hautelook']")).click();
+    }
+    
+    @After
+    public void tearDown() {
+        wd.quit();
+    }
+    
+    public static boolean isAlertPresent(FirefoxDriver wd) {
+        try {
+            wd.switchTo().alert();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+}
